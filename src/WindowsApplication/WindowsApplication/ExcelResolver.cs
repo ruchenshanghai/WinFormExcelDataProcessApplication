@@ -11,7 +11,7 @@ namespace WindowsApplication
     class ExcelResolver
     {
         string currentPathname = System.AppDomain.CurrentDomain.BaseDirectory;
-
+        private Dictionary<string, SingleDataRecord> rawDataMap = new Dictionary<string, SingleDataRecord>();
 
         public ExcelResolver()
         {
@@ -26,7 +26,7 @@ namespace WindowsApplication
             {
                 DataTable tempTable = ReadExcelToTable(currentPathname + "/" + filenameArray[i]);
                 Console.WriteLine(tempTable.Rows.Count);
-                Console.WriteLine(tempTable.Rows[0][0]);
+                Console.WriteLine();
             }
         }
         //public DataSet ExcelToDS(string Path)
