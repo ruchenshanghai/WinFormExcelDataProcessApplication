@@ -30,6 +30,8 @@ namespace WindowsApplication
 
         public SingleDataRecord(string Chromatogram, double RTmin)
         {
+            propertyMap = new Dictionary<string, string>();
+            keyArray = new ArrayList();
             this.ID = Chromatogram;
             this.time = RTmin;
         }
