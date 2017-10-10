@@ -51,7 +51,7 @@ namespace WindowsApplication
                 //    Console.WriteLine(sourceFilenameArray[i]);
 
                 //}
-                ExcelResolver excelResolver = new ExcelResolver(sourceFilenameArray);
+                ExcelResolver excelResolver = new ExcelResolver(sourceFilenameArray, rangeDealta);
             }
 
         }
@@ -70,7 +70,7 @@ namespace WindowsApplication
             }
             else
             {
-                rangeDealta = Double.Parse(RangeInput.Text);
+                rangeDealta = Math.Abs(Double.Parse(RangeInput.Text));
             }
         }
 

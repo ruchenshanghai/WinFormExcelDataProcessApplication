@@ -13,6 +13,7 @@ namespace WindowsApplication
     {
         string currentPathname = System.AppDomain.CurrentDomain.BaseDirectory;
         SingleFileContainer[] fileContainers;
+        double rangeDelta = 0;
         private string primaryKeyName = "Chromatogram";
         private string secondKeyName = "RT [min]";
         private bool inputResult = false;
@@ -24,8 +25,10 @@ namespace WindowsApplication
         }
 
         // filename contains absolute path
-        public ExcelResolver(string[] filenameArray)
+        public ExcelResolver(string[] filenameArray, double rangeParam)
         {
+            rangeDelta = rangeParam;
+            // get data from files
             int fileCount = filenameArray.Length;
             fileContainers = new SingleFileContainer[fileCount];
             for (int fileIndex = 0; fileIndex < fileCount; fileIndex++)
@@ -33,7 +36,7 @@ namespace WindowsApplication
                 DataTable tempTable = ReadExcelToTable(currentPathname + "/" + filenameArray[fileIndex]);
                 SingleFileContainer tempContainer = new SingleFileContainer();
 
-
+                // construct the SingleDataRecord: ID, time, other...
                 int tempWidth = tempTable.Columns.Count - 1;
                 int tempHeight = tempTable.Rows.Count - 1;
                 int primaryIndex = 0;
@@ -89,6 +92,9 @@ namespace WindowsApplication
                 fileContainers[fileIndex] = tempContainer;
             }
             inputResult = true;
+
+            // merge all fileContainer
+            fileContainers[0].MergeFileContainer(fileContainers[1]);
         }
         //public DataSet ExcelToDS(string Path)
         //{

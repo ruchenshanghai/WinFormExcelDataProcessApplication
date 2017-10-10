@@ -21,9 +21,21 @@ namespace WindowsApplication
             this.recordList.Add(newRecord);
         }
 
-        public void InsertFile(SingleFileContainer  newFile)
+        public SingleFileContainer MergeFileContainer(SingleFileContainer  newContainer)
         {
+            SingleFileContainer resultContainer = new SingleFileContainer();
+            for (int outerIndex = 0; outerIndex < this.recordList.Count; outerIndex++)
+            {
+                SingleDataRecord tempOuterRecord = (SingleDataRecord)recordList[outerIndex];
+                for (int innerIndex = 0; innerIndex < newContainer.recordList.Count; innerIndex++)
+                {
+                    // compare the ID first, then compare the time
 
+                }
+            }
+
+
+            return null;
         }
     }
 }

@@ -18,3 +18,13 @@ C:\Users\wenja\Desktop\Project\School\WinFormExcelDataProcessApplication\src\Win
 C:\Users\wenja\Desktop\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.CoreCompileInputs.cache
 C:\Users\wenja\Desktop\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.exe
 C:\Users\wenja\Desktop\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.pdb
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.exe.config
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.exe
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.pdb
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csprojResolveAssemblyReference.cache
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.MainForm.resources
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.Properties.Resources.resources
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.GenerateResource.Cache
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.CoreCompileInputs.cache
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.exe
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.pdb
