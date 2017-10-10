@@ -50,7 +50,7 @@ namespace WindowsApplication
                         // has merged
                         continue;
                     }
-                    if ((tempOuterRecord.ID == tempInnerRecord.ID) && (Math.Abs(tempOuterRecord.time - tempInnerRecord.time) < rangeDelta))
+                    if ((tempOuterRecord.ID == tempInnerRecord.ID) && (Math.Abs(tempOuterRecord.time - tempInnerRecord.time) <= rangeDelta))
                     {
                         double averageTime = (tempOuterRecord.time + tempInnerRecord.time) / 2;
                         SingleDataRecord tempResultRecord = new SingleDataRecord(tempOuterRecord.ID, averageTime);
@@ -77,7 +77,7 @@ namespace WindowsApplication
                         }
 
                         // add to result, remove previous data
-                        resultContainer.recordList.Add(tempResultRecord);
+                        resultContainer.InsertRecord(tempResultRecord);
                         ((SingleDataRecord)this.recordList[outerIndex]).isMerged = true;
                         ((SingleDataRecord)newContainer.recordList[innerIndex]).isMerged = true;
                         break;
@@ -104,7 +104,7 @@ namespace WindowsApplication
                         return null;
                     }
                 }
-                resultContainer.recordList.Add(tempResultRecord);
+                resultContainer.InsertRecord(tempResultRecord);
             }
             // deal with the rest new data
             for (int recordIndex = 0; recordIndex < newContainer.recordList.Count; recordIndex++)
@@ -126,7 +126,7 @@ namespace WindowsApplication
                         return null;
                     }
                 }
-                resultContainer.recordList.Add(tempResultRecord);
+                resultContainer.InsertRecord(tempResultRecord);
             }
 
             return resultContainer;
