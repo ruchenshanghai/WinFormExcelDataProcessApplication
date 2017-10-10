@@ -1,0 +1,10 @@
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.exe.config
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.exe
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.pdb
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csprojResolveAssemblyReference.cache
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.Properties.Resources.resources
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.GenerateResource.Cache
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.CoreCompileInputs.cache
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.exe
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.pdb
+C:\Users\wenja\Desktop\Project\School\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.MainForm.resources
