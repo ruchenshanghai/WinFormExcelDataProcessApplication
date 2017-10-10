@@ -82,7 +82,11 @@ namespace WindowsApplication
                             }
                             else
                             {
-                                tempRecord.AddProperty(headerArray[widthIndex], tempValue, tempTypeName);
+                                if (!tempRecord.AddProperty(headerArray[widthIndex], tempValue, tempTypeName))
+                                {
+                                    // add property failed
+                                    return;
+                                }
                             }
                         }
                         tempContainer.InsertRecord(tempRecord);
@@ -94,7 +98,7 @@ namespace WindowsApplication
             inputResult = true;
 
             // merge all fileContainer
-            fileContainers[0].MergeFileContainer(fileContainers[1]);
+            fileContainers[0].MergeFileContainer(fileContainers[1], rangeDelta);
         }
         //public DataSet ExcelToDS(string Path)
         //{

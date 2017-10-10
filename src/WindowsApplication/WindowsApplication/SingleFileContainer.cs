@@ -10,6 +10,8 @@ namespace WindowsApplication
     class SingleFileContainer
     {
         private ArrayList recordList;
+        public ArrayList keyArray = null;
+        private static string DEFAULT_VALUE = "XXX";
 
         public SingleFileContainer()
         {
@@ -19,23 +21,99 @@ namespace WindowsApplication
         public void InsertRecord(SingleDataRecord newRecord)
         {
             this.recordList.Add(newRecord);
+            if (keyArray == null)
+            {
+                keyArray = newRecord.keyArray;
+            }
         }
 
-        public SingleFileContainer MergeFileContainer(SingleFileContainer  newContainer)
+        public SingleFileContainer MergeFileContainer(SingleFileContainer  newContainer, double rangeParam)
         {
+            double rangeDelta = rangeParam;
             SingleFileContainer resultContainer = new SingleFileContainer();
             for (int outerIndex = 0; outerIndex < this.recordList.Count; outerIndex++)
             {
                 SingleDataRecord tempOuterRecord = (SingleDataRecord)recordList[outerIndex];
+                bool isMatch = false;
                 for (int innerIndex = 0; innerIndex < newContainer.recordList.Count; innerIndex++)
                 {
                     // compare the ID first, then compare the time
+                    SingleDataRecord tempInnerRecord = (SingleDataRecord)newContainer.recordList[innerIndex];
+                    if ((tempOuterRecord.ID == tempInnerRecord.ID) && (Math.Abs(tempOuterRecord.time - tempInnerRecord.time) < rangeDelta))
+                    {
+                        double averageTime = (tempOuterRecord.time + tempInnerRecord.time) / 2;
+                        SingleDataRecord tempResultRecord = new SingleDataRecord(tempOuterRecord.ID, averageTime);
+                        // copy other key-value from inner and outter
+                        for (int keyIndex = 0; keyIndex < tempOuterRecord.keyArray.Count; keyIndex++)
+                        {
+                            string tempKey = (string)tempOuterRecord.keyArray[keyIndex];
+                            string tempValue = tempOuterRecord.propertyMap[tempKey];
+                            if (!tempResultRecord.AddProperty(tempKey, tempValue))
+                            {
+                                // add property failed
+                                return null;
+                            }
+                        }
+                        for (int keyIndex = 0; keyIndex < tempInnerRecord.keyArray.Count; keyIndex++)
+                        {
+                            string tempKey = (string)tempInnerRecord.keyArray[keyIndex];
+                            string tempValue = tempInnerRecord.propertyMap[tempKey];
+                            if (!tempResultRecord.AddProperty(tempKey, tempValue))
+                            {
+                                // add property failed
+                                return null;
+                            }
+                        }
 
+                        // add to result, remove previous data
+                        resultContainer.recordList.Add(tempResultRecord);
+                        this.recordList.Remove(outerIndex);
+                        newContainer.recordList.Remove(innerIndex);
+                        isMatch = true;
+                        break;
+                    }
+                }
+                if (isMatch)
+                {
+                    outerIndex--;
                 }
             }
+            // deal with the rest this data
+            for (int recordIndex = 0; recordIndex < this.recordList.Count; recordIndex++)
+            {
+                SingleDataRecord rawDataRecord = (SingleDataRecord)this.recordList[recordIndex];
+                SingleDataRecord tempResultRecord = new SingleDataRecord(rawDataRecord.ID, rawDataRecord.time);
+                for (int newIndex = 0; newIndex < newContainer.keyArray.Count; newIndex++)
+                {
+                    string tempKey = (string)newContainer.keyArray[newIndex];
+                    string tempValue = DEFAULT_VALUE;
+                    if (!tempResultRecord.AddProperty(tempKey, tempValue))
+                    {
+                        // add property failed
+                        return null;
+                    }
+                }
+                resultContainer.recordList.Add(tempResultRecord);
+            }
+            // deal with the rest new data
+            for (int recordIndex = 0; recordIndex < newContainer.recordList.Count; recordIndex++)
+            {
+                SingleDataRecord rawDataRecord = (SingleDataRecord)newContainer.recordList[recordIndex];
+                SingleDataRecord tempResultRecord = new SingleDataRecord(rawDataRecord.ID, rawDataRecord.time);
+                for (int newIndex = 0; newIndex < this.keyArray.Count; newIndex++)
+                {
+                    string tempKey = (string)this.keyArray[newIndex];
+                    string tempValue = DEFAULT_VALUE;
+                    if (!tempResultRecord.AddProperty(tempKey, tempValue))
+                    {
+                        // add property failed
+                        return null;
+                    }
+                }
+                resultContainer.recordList.Add(tempResultRecord);
+            }
 
-
-            return null;
+            return resultContainer;
         }
     }
 }
