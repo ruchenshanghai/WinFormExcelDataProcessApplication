@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,7 +15,6 @@ namespace WindowsApplication
     public partial class MainForm : Form
     {
         string[] sourceFilenameArray;
-        string currentPathname = System.AppDomain.CurrentDomain.BaseDirectory;
         double rangeDealta = 0;
         string outputResultFilename = "result.xlsx";
         string outputDetailFilename = "detail.xlsx";
@@ -22,6 +22,11 @@ namespace WindowsApplication
         public MainForm()
         {
             InitializeComponent();
+
+            //ExcelResolver testResolver = new ExcelResolver();
+            //DataTable resultTable = testResolver.ReadExcelToTable(@"C:\Users\wenja\Desktop\Project\School\Data\QC.xlsx");
+            //Console.WriteLine(resultTable.Rows.Count);
+            //Console.WriteLine(resultTable.Select().ToString());
         }
 
 
@@ -39,13 +44,14 @@ namespace WindowsApplication
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 // get filename array
-                Console.WriteLine(currentPathname);
+                Console.WriteLine("Range Dealt: " + rangeDealta);
                 sourceFilenameArray = openFileDialog.SafeFileNames;
-                for (int i = 0; i < sourceFilenameArray.Length; i++)
-                {
-                    Console.WriteLine(currentPathname + sourceFilenameArray[i]);
-                }
+                //for (int i = 0; i < sourceFilenameArray.Length; i++)
+                //{
+                //    Console.WriteLine(sourceFilenameArray[i]);
 
+                //}
+                ExcelResolver excelResolver = new ExcelResolver(sourceFilenameArray);
             }
 
         }
@@ -65,9 +71,9 @@ namespace WindowsApplication
             else
             {
                 rangeDealta = Double.Parse(RangeInput.Text);
-                Console.WriteLine(rangeDealta);
             }
         }
+
 
     }
 
