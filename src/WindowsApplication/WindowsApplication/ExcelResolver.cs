@@ -17,6 +17,8 @@ namespace WindowsApplication
         private string primaryKeyName = "Chromatogram";
         private string secondKeyName = "RT [min]";
         private bool inputResult = false;
+        private SingleFileContainer resultFileContainer;
+
 
 
         public ExcelResolver()
@@ -98,7 +100,15 @@ namespace WindowsApplication
             inputResult = true;
 
             // merge all fileContainer
-            fileContainers[0].MergeFileContainer(fileContainers[1], rangeDelta);
+            SingleFileContainer resultFileContainer = fileContainers[0];
+            for (int fileIndex = 1; fileIndex < fileCount; fileIndex++)
+            {
+                resultFileContainer = resultFileContainer.MergeFileContainer(fileContainers[fileIndex], rangeDelta);
+            }
+
+            // need to output the result in two style: detail and simple
+
+
         }
         //public DataSet ExcelToDS(string Path)
         //{
