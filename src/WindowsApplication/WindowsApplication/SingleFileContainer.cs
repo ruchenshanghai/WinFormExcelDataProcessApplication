@@ -34,11 +34,22 @@ namespace WindowsApplication
             for (int outerIndex = 0; outerIndex < this.recordList.Count; outerIndex++)
             {
                 SingleDataRecord tempOuterRecord = (SingleDataRecord)recordList[outerIndex];
-                bool isMatch = false;
+                if (tempOuterRecord.isMerged)
+                {
+                    // has merged
+                    continue;
+                }
+                //bool isMatch = false;
                 for (int innerIndex = 0; innerIndex < newContainer.recordList.Count; innerIndex++)
                 {
+
                     // compare the ID first, then compare the time
                     SingleDataRecord tempInnerRecord = (SingleDataRecord)newContainer.recordList[innerIndex];
+                    if (tempInnerRecord.isMerged)
+                    {
+                        // has merged
+                        continue;
+                    }
                     if ((tempOuterRecord.ID == tempInnerRecord.ID) && (Math.Abs(tempOuterRecord.time - tempInnerRecord.time) < rangeDelta))
                     {
                         double averageTime = (tempOuterRecord.time + tempInnerRecord.time) / 2;
@@ -67,21 +78,21 @@ namespace WindowsApplication
 
                         // add to result, remove previous data
                         resultContainer.recordList.Add(tempResultRecord);
-                        this.recordList.Remove(outerIndex);
-                        newContainer.recordList.Remove(innerIndex);
-                        isMatch = true;
+                        ((SingleDataRecord)this.recordList[outerIndex]).isMerged = true;
+                        ((SingleDataRecord)newContainer.recordList[innerIndex]).isMerged = true;
                         break;
                     }
-                }
-                if (isMatch)
-                {
-                    outerIndex--;
                 }
             }
             // deal with the rest this data
             for (int recordIndex = 0; recordIndex < this.recordList.Count; recordIndex++)
             {
                 SingleDataRecord rawDataRecord = (SingleDataRecord)this.recordList[recordIndex];
+                if (rawDataRecord.isMerged)
+                {
+                    // has merged
+                    continue;
+                }
                 SingleDataRecord tempResultRecord = new SingleDataRecord(rawDataRecord.ID, rawDataRecord.time);
                 for (int newIndex = 0; newIndex < newContainer.keyArray.Count; newIndex++)
                 {
@@ -99,6 +110,11 @@ namespace WindowsApplication
             for (int recordIndex = 0; recordIndex < newContainer.recordList.Count; recordIndex++)
             {
                 SingleDataRecord rawDataRecord = (SingleDataRecord)newContainer.recordList[recordIndex];
+                if (rawDataRecord.isMerged)
+                {
+                    // has merged
+                    continue;
+                }
                 SingleDataRecord tempResultRecord = new SingleDataRecord(rawDataRecord.ID, rawDataRecord.time);
                 for (int newIndex = 0; newIndex < this.keyArray.Count; newIndex++)
                 {

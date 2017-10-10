@@ -15,6 +15,7 @@ namespace WindowsApplication
         // RT [min]
         public static string SECOND_ATTRIBUTE_NAME = "RT [min]";
         public double time = 0;
+        public bool isMerged = false;
 
         // other properties: Area, Int.Type, I, S/N, Max.m/z, FWHM [min], Area %
         public Dictionary<string, string> propertyMap = null;
