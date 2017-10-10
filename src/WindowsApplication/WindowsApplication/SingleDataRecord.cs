@@ -9,28 +9,33 @@ namespace WindowsApplication
     class SingleDataRecord
     {
         // Chromatogram
-        private string ID;
+        public string ID = "";
         // RT [min]
-        private double time;
+        public double time = 0;
 
         // other properties: Area, Int.Type, I, S/N, Max.m/z, FWHM [min], Area %
-        private Dictionary<string, string> propertyMap;
+        public Dictionary<string, string> propertyMap = null;
 
-        public SingleDataRecord(string Chromatogram, double RTmin)
+        public SingleDataRecord()
         {
-            this.ID = Chromatogram;
-            this.time = RTmin;
+            propertyMap = new Dictionary<string, string>();
         }
 
-        public bool addProperty(string key, string value, string typeName)
+        //public SingleDataRecord(string Chromatogram, double RTmin)
+        //{
+        //    this.ID = Chromatogram;
+        //    this.time = RTmin;
+        //}
+
+        public bool AddProperty(string key, string value, string typeName)
         {
-            if (propertyMap.ContainsKey(typeName + "-" + key))
+            if (propertyMap.ContainsKey(key + "-" + typeName))
             {
                 return false;
             }
             else
             {
-                propertyMap.Add(typeName + "-" + key, value);
+                propertyMap.Add(key + "-" + typeName, value);
                 return true;
             }
 
