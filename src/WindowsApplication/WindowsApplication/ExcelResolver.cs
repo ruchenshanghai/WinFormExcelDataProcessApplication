@@ -107,7 +107,8 @@ namespace WindowsApplication
             }
 
             // need to output the result in two style: detail and simple
-
+            int resultCount = resultFileContainer.recordList.Count;
+            Console.WriteLine(resultCount);
 
         }
         //public DataSet ExcelToDS(string Path)

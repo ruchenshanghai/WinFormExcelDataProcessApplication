@@ -9,7 +9,7 @@ namespace WindowsApplication
 {
     class SingleFileContainer
     {
-        private ArrayList recordList;
+        public ArrayList recordList;
         public ArrayList keyArray = null;
         private static string DEFAULT_VALUE = "XXX";
 
