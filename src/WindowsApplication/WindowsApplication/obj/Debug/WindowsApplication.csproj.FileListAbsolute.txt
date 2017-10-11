@@ -38,3 +38,4 @@ E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\Wind
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.CoreCompileInputs.cache
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.exe
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.pdb
+E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.ResolveComReference.cache

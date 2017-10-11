@@ -11,7 +11,7 @@ namespace WindowsApplication
     {
         public ArrayList recordList;
         public ArrayList keyArray = null;
-        private static string DEFAULT_VALUE = "XXX";
+        public static string DEFAULT_VALUE = "XXX";
 
         public SingleFileContainer()
         {
@@ -94,6 +94,16 @@ namespace WindowsApplication
                     continue;
                 }
                 SingleDataRecord tempResultRecord = new SingleDataRecord(rawDataRecord.ID, rawDataRecord.time);
+                for (int newIndex = 0; newIndex < rawDataRecord.keyArray.Count; newIndex++)
+                {
+                    string tempKey = (string)rawDataRecord.keyArray[newIndex];
+                    string tempValue = rawDataRecord.propertyMap[tempKey];
+                    if (!tempResultRecord.AddProperty(tempKey, tempValue))
+                    {
+                        // add property failed
+                        return null;
+                    }
+                }
                 for (int newIndex = 0; newIndex < newContainer.keyArray.Count; newIndex++)
                 {
                     string tempKey = (string)newContainer.keyArray[newIndex];
@@ -105,6 +115,7 @@ namespace WindowsApplication
                     }
                 }
                 resultContainer.InsertRecord(tempResultRecord);
+                rawDataRecord.isMerged = true;
             }
             // deal with the rest new data
             for (int recordIndex = 0; recordIndex < newContainer.recordList.Count; recordIndex++)
@@ -116,6 +127,16 @@ namespace WindowsApplication
                     continue;
                 }
                 SingleDataRecord tempResultRecord = new SingleDataRecord(rawDataRecord.ID, rawDataRecord.time);
+                for (int newIndex = 0; newIndex < rawDataRecord.keyArray.Count; newIndex++)
+                {
+                    string tempKey = (string)rawDataRecord.keyArray[newIndex];
+                    string tempValue = rawDataRecord.propertyMap[tempKey];
+                    if (!tempResultRecord.AddProperty(tempKey, tempValue))
+                    {
+                        // add property failed
+                        return null;
+                    }
+                }
                 for (int newIndex = 0; newIndex < this.keyArray.Count; newIndex++)
                 {
                     string tempKey = (string)this.keyArray[newIndex];
@@ -127,6 +148,23 @@ namespace WindowsApplication
                     }
                 }
                 resultContainer.InsertRecord(tempResultRecord);
+                rawDataRecord.isMerged = true;
+            }
+
+
+            for (int i = 0; i < this.recordList.Count; i++)
+            {
+                if (!((SingleDataRecord)this.recordList[i]).isMerged)
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+            for (int i = 0; i < newContainer.recordList.Count; i++)
+            {
+                if (!((SingleDataRecord)newContainer.recordList[i]).isMerged)
+                {
+                    Console.WriteLine("Error");
+                }
             }
 
             return resultContainer;
