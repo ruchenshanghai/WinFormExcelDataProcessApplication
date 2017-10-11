@@ -42,7 +42,7 @@
             this.MainLabel.Location = new System.Drawing.Point(22, 29);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.MainLabel.Size = new System.Drawing.Size(364, 126);
+            this.MainLabel.Size = new System.Drawing.Size(371, 140);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = resources.GetString("MainLabel.Text");
             this.MainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
