@@ -31,7 +31,6 @@ F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\Wi
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.exe.config
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.exe
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.pdb
-E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csprojResolveAssemblyReference.cache
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.MainForm.resources
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.Properties.Resources.resources
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.GenerateResource.Cache

@@ -213,7 +213,9 @@ namespace WindowsApplication
                     string tempKey = (string) tempKeyArray[headerIndex];
                     if (tempKey.Contains("Area-"))
                     {
-                        xlWorkSheet.Cells[1, columnIndex] = tempKey;
+                        //int tempStrLength = tempKey.Length;
+                        //tempStrLength -= 5;
+                        xlWorkSheet.Cells[1, columnIndex] = tempKey.Substring(5);
                         targetKeyArray.Add(tempKey);
                         columnIndex++;
                     }
