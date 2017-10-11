@@ -11,7 +11,7 @@ namespace WindowsApplication
     {
         public ArrayList recordList;
         public ArrayList keyArray = null;
-        public static string DEFAULT_VALUE = "XXX";
+        public static string DEFAULT_VALUE = "0";
 
         public SingleFileContainer()
         {

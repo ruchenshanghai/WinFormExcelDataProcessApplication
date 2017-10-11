@@ -211,7 +211,7 @@ namespace WindowsApplication
                 for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
                 {
                     string tempKey = (string) tempKeyArray[headerIndex];
-                    if (tempKey.Contains("Area %"))
+                    if (tempKey.Contains("Area-"))
                     {
                         xlWorkSheet.Cells[1, columnIndex] = tempKey;
                         targetKeyArray.Add(tempKey);
