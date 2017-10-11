@@ -44,7 +44,7 @@ namespace WindowsApplication
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 // get filename array
-                Console.WriteLine("Range Dealt: " + rangeDealta);
+                //Console.WriteLine("Range Dealt: " + rangeDealta);
                 sourceFilenameArray = openFileDialog.SafeFileNames;
                 //for (int i = 0; i < sourceFilenameArray.Length; i++)
                 //{

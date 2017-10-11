@@ -50,9 +50,11 @@ namespace WindowsApplication
 
             // need to output the result in two style: detail and simple
             int resultCount = resultFileContainer.recordList.Count;
-            Console.WriteLine(resultCount);
-            SaveByObjectLibrary();
+            //Console.WriteLine(resultCount);
+            SaveDetailByObjectLibrary();
+            SaveSimpleByObjectLibrary();
 
+            MessageBox.Show("Excel file created!!");
         }
 
 
@@ -181,7 +183,7 @@ namespace WindowsApplication
             return true;
         }
 
-        private void SaveByObjectLibrary()
+        private void SaveSimpleByObjectLibrary()
         {
             Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
             if (xlApp == null)
@@ -191,7 +193,67 @@ namespace WindowsApplication
             }
             else
             {
-                MessageBox.Show("Welcome!!");
+
+                Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+                Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+                object misValue = System.Reflection.Missing.Value;
+
+                xlWorkBook = xlApp.Workbooks.Add(misValue);
+                xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+                // construct header
+                xlWorkSheet.Cells[1, 1] = primaryKeyName;
+                xlWorkSheet.Cells[1, 2] = secondKeyName;
+                int columnIndex = 3;
+                ArrayList tempKeyArray = resultFileContainer.keyArray;
+                ArrayList targetKeyArray = new ArrayList();
+                int targetKeyCount = 0;
+                for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
+                {
+                    string tempKey = (string) tempKeyArray[headerIndex];
+                    if (tempKey.Contains("Area %"))
+                    {
+                        xlWorkSheet.Cells[1, columnIndex] = tempKey;
+                        targetKeyArray.Add(tempKey);
+                        columnIndex++;
+                    }
+                }
+                targetKeyCount = columnIndex - 3;
+
+                // construct the content
+                for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
+                {
+                    SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
+                    xlWorkSheet.Cells[recordIndex + 2, 1] = tempRecord.ID;
+                    xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.time;
+                    for (int keyIndex = 0; keyIndex < targetKeyCount; keyIndex++)
+                    {
+                        xlWorkSheet.Cells[recordIndex + 2, keyIndex + 3] = tempRecord.propertyMap[(string)(targetKeyArray[keyIndex])];
+                    }
+                }
+
+                string resultPathname = currentPathname + "result-simple.xls";
+                xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlWorkBook.Close(true, misValue, misValue);
+                xlApp.Quit();
+
+                Marshal.ReleaseComObject(xlWorkSheet);
+                Marshal.ReleaseComObject(xlWorkBook);
+                Marshal.ReleaseComObject(xlApp);
+
+            }
+        }
+
+        private void SaveDetailByObjectLibrary()
+        {
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            if (xlApp == null)
+            {
+                MessageBox.Show("Excel is not properly installed!!");
+                return;
+            }
+            else
+            {
 
                 Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
                 Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
@@ -223,17 +285,8 @@ namespace WindowsApplication
                     }
                 }
 
-
-                //xlWorkSheet.Cells[1, 1] = "ID";
-                //xlWorkSheet.Cells[1, 2] = "Name";
-                //xlWorkSheet.Cells[2, 1] = "1";
-                //xlWorkSheet.Cells[2, 2] = "One";
-                //xlWorkSheet.Cells[3, 1] = "2";
-                //xlWorkSheet.Cells[3, 2] = "Two";
-
-
-
-                xlWorkBook.SaveAs("E:\\Project\\School\\test-Excel.xls", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                string resultPathname = currentPathname + "result-detail.xls";
+                xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
                 xlWorkBook.Close(true, misValue, misValue);
                 xlApp.Quit();
 
@@ -241,7 +294,7 @@ namespace WindowsApplication
                 Marshal.ReleaseComObject(xlWorkBook);
                 Marshal.ReleaseComObject(xlApp);
 
-                MessageBox.Show("Excel file created!!");
+                //MessageBox.Show("Excel file created!!");
 
             }
         }
