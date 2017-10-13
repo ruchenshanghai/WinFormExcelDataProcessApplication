@@ -42,3 +42,8 @@ E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\Wind
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.application
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.exe.manifest
 E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.application
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.exe.manifest
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\bin\Debug\WindowsApplication.application
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csproj.ResolveComReference.cache
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.exe.manifest
+F:\工作\外包\药学院数据处理\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.application
