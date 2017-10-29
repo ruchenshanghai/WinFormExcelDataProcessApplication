@@ -74,7 +74,10 @@ namespace WindowsApplication
             }
         }
 
+        private void MainLabel_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 
 }

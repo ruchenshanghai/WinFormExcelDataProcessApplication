@@ -39,18 +39,19 @@
             // 
             this.MainLabel.AutoSize = true;
             this.MainLabel.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.MainLabel.Location = new System.Drawing.Point(22, 29);
+            this.MainLabel.Location = new System.Drawing.Point(29, 9);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.MainLabel.Size = new System.Drawing.Size(371, 140);
+            this.MainLabel.Size = new System.Drawing.Size(350, 154);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = resources.GetString("MainLabel.Text");
             this.MainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.MainLabel.Click += new System.EventHandler(this.MainLabel_Click);
             // 
             // MainSourceButton
             // 
             this.MainSourceButton.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.MainSourceButton.Location = new System.Drawing.Point(245, 183);
+            this.MainSourceButton.Location = new System.Drawing.Point(252, 183);
             this.MainSourceButton.Name = "MainSourceButton";
             this.MainSourceButton.Size = new System.Drawing.Size(75, 23);
             this.MainSourceButton.TabIndex = 1;
@@ -60,7 +61,7 @@
             // 
             // RangeInput
             // 
-            this.RangeInput.Location = new System.Drawing.Point(119, 185);
+            this.RangeInput.Location = new System.Drawing.Point(147, 183);
             this.RangeInput.Name = "RangeInput";
             this.RangeInput.Size = new System.Drawing.Size(70, 21);
             this.RangeInput.TabIndex = 2;
@@ -69,7 +70,7 @@
             // RangeLabel
             // 
             this.RangeLabel.AutoSize = true;
-            this.RangeLabel.Location = new System.Drawing.Point(12, 190);
+            this.RangeLabel.Location = new System.Drawing.Point(30, 190);
             this.RangeLabel.Name = "RangeLabel";
             this.RangeLabel.Size = new System.Drawing.Size(101, 12);
             this.RangeLabel.TabIndex = 3;
@@ -84,6 +85,7 @@
             this.Controls.Add(this.RangeInput);
             this.Controls.Add(this.MainSourceButton);
             this.Controls.Add(this.MainLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "MainForm";
             this.Text = "Excel数据处理软件";
             this.ResumeLayout(false);
