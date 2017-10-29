@@ -19,7 +19,9 @@ namespace WindowsApplication
         double rangeDelta = 0;
         private string primaryKeyName = "Chromatogram";
         private string secondKeyName = "RT [min]";
-        private string targetKeyName = "Area";
+        //private string targetKeyName = "Area";
+        // Area , S/N和FWHM
+        String[] targetKeyArray = { "Area", "S/N", "FWHM [min]" };
         private bool inputResult = false;
 
 
@@ -71,7 +73,7 @@ namespace WindowsApplication
             string[] headerArray;
             long primaryIndex = -3;
             long secondIndex = -3;
-            long targetIndex = -3;
+            ArrayList targetIndexArray = new ArrayList();
 
             string tempValue;
             long tempRowIndex;
@@ -117,9 +119,9 @@ namespace WindowsApplication
                 else if (tempValue == secondKeyName)
                 {
                     secondIndex = tempColumnIndex - 2;
-                } else if (tempValue == targetKeyName)
+                } else if (Array.IndexOf(targetKeyArray, tempValue) > -1)
                 {
-                    targetIndex = tempColumnIndex - 2;
+                    targetIndexArray.Add(tempColumnIndex - 2);
                 }
             }
             if ((primaryIndex == -3) || (secondIndex == -3))
@@ -134,7 +136,7 @@ namespace WindowsApplication
             for (tempRowIndex = 2; tempRowIndex <= tempRowCount; tempRowIndex++)
             {
                 SingleDataRecord tempRecord = new SingleDataRecord();
-                if (targetIndex == -3)
+                if (targetIndexArray.Count == 0)
                 {
                     // merge all column
 
@@ -171,11 +173,25 @@ namespace WindowsApplication
                     // only add Column: primary, second, Aera 
                     tempRecord.ID = (range.Cells[tempRowIndex, primaryIndex + 2] as Microsoft.Office.Interop.Excel.Range).Value2.ToString();
                     tempRecord.time = double.Parse((range.Cells[tempRowIndex, secondIndex + 2] as Microsoft.Office.Interop.Excel.Range).Value2.ToString());
-                    if (!tempRecord.AddProperty(targetKeyName, (range.Cells[tempRowIndex, targetIndex + 2] as Microsoft.Office.Interop.Excel.Range).Value2.ToString(), tempTypename))
+                    for (int i = 0; i < targetIndexArray.Count; i++)
                     {
-                        // add property failed
-                        return null;
+                        long tempIndex = (long)targetIndexArray[i];
+                        String tempKeyName = headerArray[tempIndex];
+                        if ((range.Cells[tempRowIndex, tempIndex + 2] as Microsoft.Office.Interop.Excel.Range).Value2 == null)
+                        {
+                            tempValue = SingleFileContainer.DEFAULT_VALUE;
+                        }
+                        else
+                        {
+                            tempValue = (range.Cells[tempRowIndex, tempIndex + 2] as Microsoft.Office.Interop.Excel.Range).Value2.ToString();
+                        }
+                        if (!tempRecord.AddProperty(tempKeyName, tempValue, tempTypename))
+                        {
+                            // add property failed
+                            return null;
+                        }
                     }
+
                 }
 
                 tempFileContainer.InsertRecord(tempRecord);
@@ -268,122 +284,122 @@ namespace WindowsApplication
             }
         }
 
-        private void SaveSimpleByObjectLibrary()
-        {
-            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-            if (xlApp == null)
-            {
-                MessageBox.Show("Excel is not properly installed!!");
-                return;
-            }
-            else
-            {
+        //private void SaveSimpleByObjectLibrary()
+        //{
+        //    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+        //    if (xlApp == null)
+        //    {
+        //        MessageBox.Show("Excel is not properly installed!!");
+        //        return;
+        //    }
+        //    else
+        //    {
 
-                Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
-                Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-                object misValue = System.Reflection.Missing.Value;
+        //        Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+        //        Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+        //        object misValue = System.Reflection.Missing.Value;
 
-                xlWorkBook = xlApp.Workbooks.Add(misValue);
-                xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //        xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                // construct header
-                xlWorkSheet.Cells[1, 1] = primaryKeyName;
-                xlWorkSheet.Cells[1, 2] = secondKeyName;
-                long columnIndex = 3;
-                ArrayList tempKeyArray = resultFileContainer.keyArray;
-                ArrayList targetKeyArray = new ArrayList();
-                long targetKeyCount = 0;
-                for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
-                {
-                    string tempKey = (string) tempKeyArray[headerIndex];
-                    if (tempKey.Contains("Area-"))
-                    {
-                        //long tempStrLength = tempKey.Length;
-                        //tempStrLength -= 5;
-                        xlWorkSheet.Cells[1, columnIndex] = tempKey.Substring(5);
-                        targetKeyArray.Add(tempKey);
-                        columnIndex++;
-                    }
-                }
-                targetKeyCount = columnIndex - 3;
+        //        // construct header
+        //        xlWorkSheet.Cells[1, 1] = primaryKeyName;
+        //        xlWorkSheet.Cells[1, 2] = secondKeyName;
+        //        long columnIndex = 3;
+        //        ArrayList tempKeyArray = resultFileContainer.keyArray;
+        //        ArrayList targetKeyArray = new ArrayList();
+        //        long targetKeyCount = 0;
+        //        for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
+        //        {
+        //            string tempKey = (string) tempKeyArray[headerIndex];
+        //            if (tempKey.Contains("Area-"))
+        //            {
+        //                //long tempStrLength = tempKey.Length;
+        //                //tempStrLength -= 5;
+        //                xlWorkSheet.Cells[1, columnIndex] = tempKey.Substring(5);
+        //                targetKeyArray.Add(tempKey);
+        //                columnIndex++;
+        //            }
+        //        }
+        //        targetKeyCount = columnIndex - 3;
 
-                // construct the content
-                for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
-                {
-                    SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
-                    xlWorkSheet.Cells[recordIndex + 2, 1] = tempRecord.ID;
-                    xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.time;
-                    for (int keyIndex = 0; keyIndex < targetKeyCount; keyIndex++)
-                    {
-                        xlWorkSheet.Cells[recordIndex + 2, keyIndex + 3] = tempRecord.propertyMap[(string)(targetKeyArray[keyIndex])];
-                    }
-                }
+        //        // construct the content
+        //        for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
+        //        {
+        //            SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
+        //            xlWorkSheet.Cells[recordIndex + 2, 1] = tempRecord.ID;
+        //            xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.time;
+        //            for (int keyIndex = 0; keyIndex < targetKeyCount; keyIndex++)
+        //            {
+        //                xlWorkSheet.Cells[recordIndex + 2, keyIndex + 3] = tempRecord.propertyMap[(string)(targetKeyArray[keyIndex])];
+        //            }
+        //        }
 
-                string resultPathname = currentPathname + "result-simple.xls";
-                xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook.Close(true, misValue, misValue);
-                xlApp.Quit();
+        //        string resultPathname = currentPathname + "result-simple.xls";
+        //        xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //        xlWorkBook.Close(true, misValue, misValue);
+        //        xlApp.Quit();
 
-                Marshal.ReleaseComObject(xlWorkSheet);
-                Marshal.ReleaseComObject(xlWorkBook);
-                Marshal.ReleaseComObject(xlApp);
+        //        Marshal.ReleaseComObject(xlWorkSheet);
+        //        Marshal.ReleaseComObject(xlWorkBook);
+        //        Marshal.ReleaseComObject(xlApp);
 
-            }
-        }
-        private void SaveDetailByObjectLibrary()
-        {
-            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-            if (xlApp == null)
-            {
-                MessageBox.Show("Excel is not properly installed!!");
-                return;
-            }
-            else
-            {
+        //    }
+        //}
+        //private void SaveDetailByObjectLibrary()
+        //{
+        //    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+        //    if (xlApp == null)
+        //    {
+        //        MessageBox.Show("Excel is not properly installed!!");
+        //        return;
+        //    }
+        //    else
+        //    {
 
-                Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
-                Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-                object misValue = System.Reflection.Missing.Value;
+        //        Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+        //        Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+        //        object misValue = System.Reflection.Missing.Value;
 
-                xlWorkBook = xlApp.Workbooks.Add(misValue);
-                xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //        xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                // construct header
-                xlWorkSheet.Cells[1, 1] = primaryKeyName;
-                xlWorkSheet.Cells[1, 2] = secondKeyName;
-                long columnIndex = 3;
-                ArrayList tempKeyArray = resultFileContainer.keyArray;
-                for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
-                {
-                    xlWorkSheet.Cells[1, columnIndex] = tempKeyArray[headerIndex];
-                    columnIndex++;
-                }
+        //        // construct header
+        //        xlWorkSheet.Cells[1, 1] = primaryKeyName;
+        //        xlWorkSheet.Cells[1, 2] = secondKeyName;
+        //        long columnIndex = 3;
+        //        ArrayList tempKeyArray = resultFileContainer.keyArray;
+        //        for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
+        //        {
+        //            xlWorkSheet.Cells[1, columnIndex] = tempKeyArray[headerIndex];
+        //            columnIndex++;
+        //        }
 
-                // construct the content
-                for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
-                {
-                    SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
-                    xlWorkSheet.Cells[recordIndex + 2, 1] = tempRecord.ID;
-                    xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.time;
-                    for (int keyIndex = 0; keyIndex < tempKeyArray.Count; keyIndex++)
-                    {
-                        xlWorkSheet.Cells[recordIndex + 2, keyIndex + 3] = tempRecord.propertyMap[(string)(tempKeyArray[keyIndex])];
-                    }
-                }
+        //        // construct the content
+        //        for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
+        //        {
+        //            SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
+        //            xlWorkSheet.Cells[recordIndex + 2, 1] = tempRecord.ID;
+        //            xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.time;
+        //            for (int keyIndex = 0; keyIndex < tempKeyArray.Count; keyIndex++)
+        //            {
+        //                xlWorkSheet.Cells[recordIndex + 2, keyIndex + 3] = tempRecord.propertyMap[(string)(tempKeyArray[keyIndex])];
+        //            }
+        //        }
 
-                string resultPathname = currentPathname + "result-detail.xls";
-                xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook.Close(true, misValue, misValue);
-                xlApp.Quit();
+        //        string resultPathname = currentPathname + "result-detail.xls";
+        //        xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //        xlWorkBook.Close(true, misValue, misValue);
+        //        xlApp.Quit();
 
-                Marshal.ReleaseComObject(xlWorkSheet);
-                Marshal.ReleaseComObject(xlWorkBook);
-                Marshal.ReleaseComObject(xlApp);
+        //        Marshal.ReleaseComObject(xlWorkSheet);
+        //        Marshal.ReleaseComObject(xlWorkBook);
+        //        Marshal.ReleaseComObject(xlApp);
 
-                //MessageBox.Show("Excel file created!!");
+        //        //MessageBox.Show("Excel file created!!");
 
-            }
-        }
+        //    }
+        //}
 
         //public void DSToExcel(string Path, DataSet oldds)
         //{

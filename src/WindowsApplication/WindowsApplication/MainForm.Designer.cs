@@ -39,10 +39,10 @@
             // 
             this.MainLabel.AutoSize = true;
             this.MainLabel.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.MainLabel.Location = new System.Drawing.Point(29, 9);
+            this.MainLabel.Location = new System.Drawing.Point(29, 18);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.MainLabel.Size = new System.Drawing.Size(350, 154);
+            this.MainLabel.Size = new System.Drawing.Size(350, 168);
             this.MainLabel.TabIndex = 0;
             this.MainLabel.Text = resources.GetString("MainLabel.Text");
             this.MainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -51,7 +51,7 @@
             // MainSourceButton
             // 
             this.MainSourceButton.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.MainSourceButton.Location = new System.Drawing.Point(252, 183);
+            this.MainSourceButton.Location = new System.Drawing.Point(255, 200);
             this.MainSourceButton.Name = "MainSourceButton";
             this.MainSourceButton.Size = new System.Drawing.Size(75, 23);
             this.MainSourceButton.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             // RangeInput
             // 
-            this.RangeInput.Location = new System.Drawing.Point(147, 183);
+            this.RangeInput.Location = new System.Drawing.Point(148, 200);
             this.RangeInput.Name = "RangeInput";
             this.RangeInput.Size = new System.Drawing.Size(70, 21);
             this.RangeInput.TabIndex = 2;
@@ -70,7 +70,7 @@
             // RangeLabel
             // 
             this.RangeLabel.AutoSize = true;
-            this.RangeLabel.Location = new System.Drawing.Point(30, 190);
+            this.RangeLabel.Location = new System.Drawing.Point(30, 207);
             this.RangeLabel.Name = "RangeLabel";
             this.RangeLabel.Size = new System.Drawing.Size(101, 12);
             this.RangeLabel.TabIndex = 3;
