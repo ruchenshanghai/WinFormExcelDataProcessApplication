@@ -32,6 +32,7 @@ namespace WindowsApplication
 
         private void MainSourceButton_Click(object sender, EventArgs e)
         {
+            ExcelResolver test = new ExcelResolver();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Excel文件(*.xls;*.xlsx)|*.xls;*.xlsx|所有文件|*.*";
             openFileDialog.ValidateNames = true;
@@ -44,13 +45,7 @@ namespace WindowsApplication
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 // get filename array
-                //Console.WriteLine("Range Dealt: " + rangeDealta);
                 sourceFilenameArray = openFileDialog.SafeFileNames;
-                //for (int i = 0; i < sourceFilenameArray.Length; i++)
-                //{
-                //    Console.WriteLine(sourceFilenameArray[i]);
-
-                //}
                 ExcelResolver excelResolver = new ExcelResolver(sourceFilenameArray, rangeDealta);
             }
 
