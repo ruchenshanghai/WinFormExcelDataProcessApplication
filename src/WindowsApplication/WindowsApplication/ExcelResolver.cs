@@ -55,10 +55,8 @@ namespace WindowsApplication
 
             // need to output the result in two style: detail and simple
             long resultCount = resultFileContainer.recordList.Count;
-            //Console.WriteLine(resultCount);
+            Console.WriteLine(resultCount);
             SaveByObjectLibrary();
-            //SaveDetailByObjectLibrary();
-            //SaveSimpleByObjectLibrary();
 
             MessageBox.Show("Excel file created!!");
         }
@@ -226,251 +224,49 @@ namespace WindowsApplication
             return true;
         }
 
-
         private void SaveByObjectLibrary()
         {
             Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-            if (xlApp == null)
+            Microsoft.Office.Interop.Excel.Workbooks xlWorkBooks = xlApp.Workbooks;
+            Microsoft.Office.Interop.Excel.Workbook xlWorkBook = xlWorkBooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
+            Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet = xlWorkBook.Worksheets[1];
+            object misValue = System.Reflection.Missing.Value;
+            if (xlApp == null || xlWorkBooks == null || xlWorkBook == null || xlWorkSheet == null)
             {
-                MessageBox.Show("Excel is not properly installed!!");
                 return;
             }
-            else
+            xlWorkSheet.Name = "result";
+            xlWorkSheet.Cells[1, 1] = "result";
+
+            // construct header
+            xlWorkSheet.Cells[1, 2] = primaryKeyName;
+            xlWorkSheet.Cells[1, 3] = secondKeyName;
+            long columnIndex = 4;
+            ArrayList tempKeyArray = resultFileContainer.keyArray;
+            for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
             {
-
-                Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
-                Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-                object misValue = System.Reflection.Missing.Value;
-
-                xlWorkBook = xlApp.Workbooks.Add(misValue);
-                xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-                xlWorkSheet.Cells[1, 1] = "result";
-
-                // construct header
-                xlWorkSheet.Cells[1, 2] = primaryKeyName;
-                xlWorkSheet.Cells[1, 3] = secondKeyName;
-                long columnIndex = 4;
-                ArrayList tempKeyArray = resultFileContainer.keyArray;
-                for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
-                {
-                    xlWorkSheet.Cells[1, columnIndex] = tempKeyArray[headerIndex];
-                    columnIndex++;
-                }
-
-                // construct the content
-                for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
-                {
-                    SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
-                    xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.ID;
-                    xlWorkSheet.Cells[recordIndex + 2, 3] = tempRecord.time;
-                    for (int keyIndex = 0; keyIndex < tempKeyArray.Count; keyIndex++)
-                    {
-                        xlWorkSheet.Cells[recordIndex + 2, keyIndex + 4] = tempRecord.propertyMap[(string)(tempKeyArray[keyIndex])];
-                    }
-                }
-
-                string resultPathname = currentPathname + "result.xls";
-                xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook.Close(true, misValue, misValue);
-                xlApp.Quit();
-
-                Marshal.ReleaseComObject(xlWorkSheet);
-                Marshal.ReleaseComObject(xlWorkBook);
-                Marshal.ReleaseComObject(xlApp);
-
-                //MessageBox.Show("Excel file created!!");
-
+                xlWorkSheet.Cells[1, columnIndex] = tempKeyArray[headerIndex];
+                columnIndex++;
             }
+
+            // construct the content
+            for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
+            {
+                SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
+                xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.ID;
+                xlWorkSheet.Cells[recordIndex + 2, 3] = tempRecord.time;
+                for (int keyIndex = 0; keyIndex < tempKeyArray.Count; keyIndex++)
+                {
+                    xlWorkSheet.Cells[recordIndex + 2, keyIndex + 4] = tempRecord.propertyMap[(string)(tempKeyArray[keyIndex])];
+                }
+            }
+
+            xlWorkBook.SaveAs(currentPathname + "result.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Microsoft.Office.Interop.Excel.XlSaveConflictResolution.xlUserResolution, misValue, misValue, misValue, misValue);
+            xlWorkBooks.Close();
+            xlApp.Quit();
+            Marshal.ReleaseComObject(xlWorkSheet);
+            Marshal.ReleaseComObject(xlWorkBooks);
+            Marshal.ReleaseComObject(xlApp);
         }
-
-        //private void SaveSimpleByObjectLibrary()
-        //{
-        //    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-        //    if (xlApp == null)
-        //    {
-        //        MessageBox.Show("Excel is not properly installed!!");
-        //        return;
-        //    }
-        //    else
-        //    {
-
-        //        Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
-        //        Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-        //        object misValue = System.Reflection.Missing.Value;
-
-        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
-        //        xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-        //        // construct header
-        //        xlWorkSheet.Cells[1, 1] = primaryKeyName;
-        //        xlWorkSheet.Cells[1, 2] = secondKeyName;
-        //        long columnIndex = 3;
-        //        ArrayList tempKeyArray = resultFileContainer.keyArray;
-        //        ArrayList targetKeyArray = new ArrayList();
-        //        long targetKeyCount = 0;
-        //        for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
-        //        {
-        //            string tempKey = (string) tempKeyArray[headerIndex];
-        //            if (tempKey.Contains("Area-"))
-        //            {
-        //                //long tempStrLength = tempKey.Length;
-        //                //tempStrLength -= 5;
-        //                xlWorkSheet.Cells[1, columnIndex] = tempKey.Substring(5);
-        //                targetKeyArray.Add(tempKey);
-        //                columnIndex++;
-        //            }
-        //        }
-        //        targetKeyCount = columnIndex - 3;
-
-        //        // construct the content
-        //        for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
-        //        {
-        //            SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
-        //            xlWorkSheet.Cells[recordIndex + 2, 1] = tempRecord.ID;
-        //            xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.time;
-        //            for (int keyIndex = 0; keyIndex < targetKeyCount; keyIndex++)
-        //            {
-        //                xlWorkSheet.Cells[recordIndex + 2, keyIndex + 3] = tempRecord.propertyMap[(string)(targetKeyArray[keyIndex])];
-        //            }
-        //        }
-
-        //        string resultPathname = currentPathname + "result-simple.xls";
-        //        xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-        //        xlWorkBook.Close(true, misValue, misValue);
-        //        xlApp.Quit();
-
-        //        Marshal.ReleaseComObject(xlWorkSheet);
-        //        Marshal.ReleaseComObject(xlWorkBook);
-        //        Marshal.ReleaseComObject(xlApp);
-
-        //    }
-        //}
-        //private void SaveDetailByObjectLibrary()
-        //{
-        //    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-        //    if (xlApp == null)
-        //    {
-        //        MessageBox.Show("Excel is not properly installed!!");
-        //        return;
-        //    }
-        //    else
-        //    {
-
-        //        Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
-        //        Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-        //        object misValue = System.Reflection.Missing.Value;
-
-        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
-        //        xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-        //        // construct header
-        //        xlWorkSheet.Cells[1, 1] = primaryKeyName;
-        //        xlWorkSheet.Cells[1, 2] = secondKeyName;
-        //        long columnIndex = 3;
-        //        ArrayList tempKeyArray = resultFileContainer.keyArray;
-        //        for (int headerIndex = 0; headerIndex < tempKeyArray.Count; headerIndex++)
-        //        {
-        //            xlWorkSheet.Cells[1, columnIndex] = tempKeyArray[headerIndex];
-        //            columnIndex++;
-        //        }
-
-        //        // construct the content
-        //        for (int recordIndex = 0; recordIndex < resultFileContainer.recordList.Count; recordIndex++)
-        //        {
-        //            SingleDataRecord tempRecord = (SingleDataRecord)(resultFileContainer.recordList[recordIndex]);
-        //            xlWorkSheet.Cells[recordIndex + 2, 1] = tempRecord.ID;
-        //            xlWorkSheet.Cells[recordIndex + 2, 2] = tempRecord.time;
-        //            for (int keyIndex = 0; keyIndex < tempKeyArray.Count; keyIndex++)
-        //            {
-        //                xlWorkSheet.Cells[recordIndex + 2, keyIndex + 3] = tempRecord.propertyMap[(string)(tempKeyArray[keyIndex])];
-        //            }
-        //        }
-
-        //        string resultPathname = currentPathname + "result-detail.xls";
-        //        xlWorkBook.SaveAs(resultPathname, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-        //        xlWorkBook.Close(true, misValue, misValue);
-        //        xlApp.Quit();
-
-        //        Marshal.ReleaseComObject(xlWorkSheet);
-        //        Marshal.ReleaseComObject(xlWorkBook);
-        //        Marshal.ReleaseComObject(xlApp);
-
-        //        //MessageBox.Show("Excel file created!!");
-
-        //    }
-        //}
-
-        //public void DSToExcel(string Path, DataSet oldds)
-        //{
-        //    //先得到汇总EXCEL的DataSet 主要目的是获得EXCEL在DataSet中的结构 
-        //    string strCon = " Provider = Microsoft.Jet.OLEDB.4.0 ; Data Source =" + Path + ";Extended Properties=Excel 8.0";
-        //    OleDbConnection myConn = new OleDbConnection(strCon);
-        //    string strCom = "select * from [Sheet1$]";
-        //    myConn.Open();
-        //    OleDbDataAdapter myCommand = new OleDbDataAdapter(strCom, myConn);
-        //    ystem.Data.OleDb.OleDbCommandBuilder builder = new OleDbCommandBuilder(myCommand);
-        //    //QuotePrefix和QuoteSuffix主要是对builder生成InsertComment命令时使用。 
-        //    builder.QuotePrefix = "[";     //获取insert语句中保留字符（起始位置） 
-        //    builder.QuoteSuffix = "]"; //获取insert语句中保留字符（结束位置） 
-        //    DataSet newds = new DataSet();
-        //    myCommand.Fill(newds, "Table1");
-        //    for (int i = 0; i < oldds.Tables[0].Rows.Count; i++)
-        //    {
-        //        //在这里不能使用ImportRow方法将一行导入到news中，因为ImportRow将保留原来DataRow的所有设置(DataRowState状态不变)。
-        //        在使用ImportRow后newds内有值，但不能更新到Excel中因为所有导入行的DataRowState != Added
-        //    DataRow nrow = aDataSet.Tables["Table1"].NewRow();
-        //        for (int j = 0; j < newds.Tables[0].Columns.Count; j++)
-        //        {
-        //            nrow[j] = oldds.Tables[0].Rows[i][j];
-        //        }
-        //        newds.Tables["Table1"].Rows.Add(nrow);
-        //    }
-        //    myCommand.Update(newds, "Table1");
-        //    myConn.Close();
-        //}
-
-        //public DataSet ExcelToDS(string Path)
-        //{
-        //    string strConn = "Provider=Microsoft.Jet.OLEDB.4.0;" + "Data Source=" + Path + ";" + "Extended Properties=Excel 8.0;";
-        //    OleDbConnection conn = new OleDbConnection(strConn);
-        //    conn.Open();
-        //    string strExcel = "";
-        //    OleDbDataAdapter myCommand = null;
-        //    DataSet ds = null;
-        //    strExcel = "select * from [sheet1$]";
-        //    myCommand = new OleDbDataAdapter(strExcel, strConn);
-        //    ds = new DataSet();
-        //    myCommand.Fill(ds, "Sheet1");
-        //    return ds;
-        //}
-
-        ////根据excle的路径把第一个sheet: Sheet1中的内容放入datatable
-        //private DataTable ReadExcelToTable(string path)//excel存放的路径
-        //{
-        //    try
-        //    {
-        //        //连接字符串
-        //        string connstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties='Excel 8.0;HDR=NO;IMEX=1';"; // Office 07及以上版本 不能出现多余的空格 而且分号注意
-        //        //string connstring = Provider=Microsoft.JET.OLEDB.4.0;Data Source=" + path + ";Extended Properties='Excel 8.0;HDR=NO;IMEX=1';"; //Office 07以下版本 
-        //        using (OleDbConnection conn = new OleDbConnection(connstring))
-        //        {
-        //            conn.Open();
-        //            DataTable sheetsName = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "Table" }); //得到所有sheet的名字
-        //            string firstSheetName = sheetsName.Rows[0][2].ToString(); //得到第一个sheet的名字
-        //            string sql = string.Format("SELECT * FROM [{0}]", firstSheetName); //查询字符串
-
-        //            OleDbDataAdapter ada = new OleDbDataAdapter(sql, connstring);
-        //            DataSet set = new DataSet();
-        //            ada.Fill(set);
-        //            return set.Tables[0];
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return null;
-        //    }
-
-        //}
     }
 }
