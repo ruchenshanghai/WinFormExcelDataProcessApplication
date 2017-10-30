@@ -1,0 +1,6 @@
+
+*.ide-shm
+
+src/WindowsApplication/\.vs/WindowsApplication/v15/Server/sqlite3/
+
+src/WindowsApplication/\.vs/WindowsApplication/v15/sqlite3/
