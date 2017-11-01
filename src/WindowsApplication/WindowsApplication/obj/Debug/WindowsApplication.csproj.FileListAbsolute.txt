@@ -77,3 +77,4 @@ F:\项目\School\WinFormExcelDataProcessApplication\src\WindowsApplication\Windo
 F:\项目\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.application
 F:\项目\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.exe
 F:\项目\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.pdb
+E:\Project\School\WinFormExcelDataProcessApplication\src\WindowsApplication\WindowsApplication\obj\Debug\WindowsApplication.csprojResolveAssemblyReference.cache

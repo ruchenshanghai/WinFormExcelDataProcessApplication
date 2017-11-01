@@ -21,7 +21,7 @@ namespace WindowsApplication
         private string secondKeyName = "RT [min]";
         //private string targetKeyName = "Area";
         // Area , S/N和FWHM
-        String[] targetKeyArray = { "Area", "S/N", "FWHM [min]" };
+        String[] targetKeyArray = { "Area", "S/N", "FWHM [min]", "Int. Type", "I", "Max. m/z", "Area %" };
         private bool inputResult = false;
 
 
